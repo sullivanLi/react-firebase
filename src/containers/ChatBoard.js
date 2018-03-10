@@ -38,7 +38,7 @@ class ChatBoard extends PureComponent {
       message: data.val().message,
       timestamp: data.val().timestamp,
     };
-    chatArray.push(item);
+    chatArray.unshift(item);
     this.setState({
       boardMsg: chatArray,
     });
