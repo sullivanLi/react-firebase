@@ -1,15 +1,25 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { List, ListItem } from 'material-ui/List';
-import shortid from 'shortid';
 
 class Board extends PureComponent {
+  timeformat = (timestamp) => {
+    var date = new Date(timestamp);
+    const year    = date.getFullYear();
+    const month   = date.getMonth()+1;
+    const day     = date.getDate();
+    const hour    = date.getHours();
+    const minute  = date.getMinutes();
+    const seconds = date.getSeconds();
+    return `${year}/${month}/${day} ${hour}:${minute}:${seconds}`;
+  }
+
   render() {
     const MessageList = this.props.messages.map((item) =>
-      <ListItem key={shortid.generate()}
+      <ListItem key={item.id}
         primaryText={
           <p>
-            {item.username} -> {item.timestamp}
+            {item.username} -> {this.timeformat(item.timestamp)}
           </p>
         }
         secondaryText={item.message}

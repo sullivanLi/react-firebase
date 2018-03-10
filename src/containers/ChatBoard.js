@@ -14,6 +14,7 @@ class ChatBoard extends PureComponent {
       boardMsg: [],
       msgInput: ''
     };
+    this.chatRef = undefined;
   }
 
   componentDidMount() {
@@ -26,6 +27,21 @@ class ChatBoard extends PureComponent {
       messagingSenderId: "63366833400"
     };
     firebase.initializeApp(config);
+    this.chatRef = firebase.database().ref('chatboad');
+  }
+
+  getUpdateFromFirebase = (data) => {
+    let chatArray = this.state.boardMsg.slice();
+    const item = {
+      id: data.key,
+      username: data.val().username,
+      message: data.val().message,
+      timestamp: data.val().timestamp,
+    };
+    chatArray.push(item);
+    this.setState({
+      boardMsg: chatArray,
+    });
   }
 
   handleChage = (field) => (event) => {
@@ -39,6 +55,8 @@ class ChatBoard extends PureComponent {
       this.setState({
         userDialogOpen: false,
       });
+      // retrieve data from firebase
+      this.chatRef.on('child_added', this.getUpdateFromFirebase);
     } else {
       this.setState({
         userDialogErr: 'Your name cant be empty.'
@@ -50,13 +68,12 @@ class ChatBoard extends PureComponent {
     if (this.state.msgInput === '') {
       return;
     }
-    const chatRef = firebase.database().ref('chatboad');
     const data = {
-      name: this.state.userName,
+      username: this.state.userName,
       message: this.state.msgInput,
       timestamp: Date.now(),
     }
-    chatRef.push(data);
+    this.chatRef.push(data);
     this.setState({
       msgInput: '',
     });
