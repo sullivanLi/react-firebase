@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import UserDialog from '../components/UserDialog';
+import Board from '../components/Board';
 
 class ChatBoard extends PureComponent {
   constructor() {
@@ -7,6 +8,7 @@ class ChatBoard extends PureComponent {
     this.state = {
       userDialogOpen: true,
       userDialogErr: '',
+      boardMsg: []
     };
   }
 
@@ -27,6 +29,7 @@ class ChatBoard extends PureComponent {
     return (
       <div>
         <UserDialog open={this.state.userDialogOpen} handleSubmit={this.handleUserNameSubmit} errMsg={this.state.userDialogErr} />
+        <Board messages={this.state.boardMsg} />
       </div>
     );
   }
