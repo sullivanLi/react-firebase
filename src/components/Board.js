@@ -18,7 +18,7 @@ class Board extends PureComponent {
     );
 
     return (
-      <div style={{maxHeight: 500, overflow: 'auto'}}>
+      <div style={{height: 500, overflow: 'auto'}}>
         <List>
           {MessageList}
         </List>
