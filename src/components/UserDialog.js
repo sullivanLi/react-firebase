@@ -5,25 +5,12 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
 class UserDialog extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      name: '',
-    }
-  }
-
-  handleChage = (field) => (event) => {
-    this.setState({
-      [field]: event.target.value,
-    });
-  }
-
   render() {
     const actions = [
       <FlatButton
         label="Submit"
         primary={true}
-        onClick={() => this.props.handleSubmit(this.state.name)}
+        onClick={this.props.handleSubmit}
       />,
     ];
 
@@ -38,7 +25,7 @@ class UserDialog extends PureComponent {
           <div style={{ color: 'red' }}>
             {this.props.errMsg}
           </div>
-          <TextField hintText="Your Name" onChange={this.handleChage('name')} />
+          <TextField hintText="Your Name" onChange={this.props.handleChage('userName')} />
         </Dialog>
       </div>
     );
@@ -48,6 +35,7 @@ class UserDialog extends PureComponent {
 UserDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  handleChage: PropTypes.func.isRequired,
   errMsg: PropTypes.string,
 };
 

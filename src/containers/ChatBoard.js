@@ -7,6 +7,7 @@ class ChatBoard extends PureComponent {
   constructor() {
     super();
     this.state = {
+      userName: '',
       userDialogOpen: true,
       userDialogErr: '',
       boardMsg: [],
@@ -20,9 +21,9 @@ class ChatBoard extends PureComponent {
     });
   }
 
-  handleUserNameSubmit = (name) => {
-    if (name) {
-      sessionStorage.setItem('userName', name);
+  handleUserNameSubmit = () => {
+    if (this.state.userName) {
+      sessionStorage.setItem('userName', this.state.userName);
       this.setState({
         userDialogOpen: false,
       });
@@ -43,8 +44,10 @@ class ChatBoard extends PureComponent {
   render() {
     return (
       <div>
-        <UserDialog open={this.state.userDialogOpen} handleSubmit={this.handleUserNameSubmit} errMsg={this.state.userDialogErr} />
+        <UserDialog open={this.state.userDialogOpen} handleSubmit={this.handleUserNameSubmit} handleChage={this.handleChage} errMsg={this.state.userDialogErr} />
         <Board messages={this.state.boardMsg} />
+        <br />
+        Hi, {this.state.userName}
         <br />
         <MessageInput handleSubmit={this.handleMsgInputSubmit} handleChage={this.handleChage} value={this.state.msgInput} />
       </div>
