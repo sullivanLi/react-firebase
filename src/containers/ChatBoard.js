@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import UserDialog from '../components/UserDialog';
 import Board from '../components/Board';
 import MessageInput from '../components/MessageInput';
+import * as firebase from 'firebase';
 
 class ChatBoard extends PureComponent {
   constructor() {
@@ -15,6 +16,18 @@ class ChatBoard extends PureComponent {
     };
   }
 
+  componentDidMount() {
+    const config = {
+      apiKey: "AIzaSyC-iWVepLlcEe2RMMNwL_bJtKC6FgKqRr0",
+      authDomain: "react-firebase-460e4.firebaseapp.com",
+      databaseURL: "https://react-firebase-460e4.firebaseio.com",
+      projectId: "react-firebase-460e4",
+      storageBucket: "",
+      messagingSenderId: "63366833400"
+    };
+    firebase.initializeApp(config);
+  }
+
   handleChage = (field) => (event) => {
     this.setState({
       [field]: event.target.value,
@@ -23,7 +36,6 @@ class ChatBoard extends PureComponent {
 
   handleUserNameSubmit = () => {
     if (this.state.userName) {
-      sessionStorage.setItem('userName', this.state.userName);
       this.setState({
         userDialogOpen: false,
       });
@@ -35,7 +47,16 @@ class ChatBoard extends PureComponent {
   }
 
   handleMsgInputSubmit = () => {
-    console.log(this.state.msgInput);
+    if (this.state.msgInput === '') {
+      return;
+    }
+    const chatRef = firebase.database().ref('chatboad');
+    const data = {
+      name: this.state.userName,
+      message: this.state.msgInput,
+      timestamp: Date.now(),
+    }
+    chatRef.push(data);
     this.setState({
       msgInput: '',
     });
