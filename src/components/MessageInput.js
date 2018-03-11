@@ -1,19 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import { connect } from 'react-redux';
+import { db } from '../firebase';
 
-const MessageInput = (props) => (
-  <div>
-    <TextField hintText="Say Something" fullWidth={true} value={props.value} onChange={props.handleChage('msgInput')} />
-    <RaisedButton label="Submit" primary={true} onClick={props.handleSubmit} />
-  </div>
-);
+class MessageInput extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      msgInput: '',
+    };
+  }
 
-MessageInput.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleChage: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
-};
+  handleChage = (field) => (event) => {
+    this.setState({
+      [field]: event.target.value,
+    });
+  }
 
-export default MessageInput;
+  handleSubmit = () => {
+    if (this.state.msgInput === '') {
+      return;
+    }
+    db.pushMessage(this.props.username, this.state.msgInput);
+    this.setState({
+      msgInput: '',
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <TextField hintText="Say Something" fullWidth={true} value={this.state.msgInput} onChange={this.handleChage('msgInput')} />
+        <RaisedButton label="Submit" primary={true} onClick={this.handleSubmit} />
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  username: state.userState.username,
+});
+
+export default connect(mapStateToProps)(MessageInput);

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { List, ListItem } from 'material-ui/List';
+import { connect } from 'react-redux';
 
 class Board extends PureComponent {
   timeformat = (timestamp) => {
@@ -15,14 +15,14 @@ class Board extends PureComponent {
   }
 
   render() {
-    const MessageList = this.props.messages.map((item) =>
-      <ListItem key={item.id}
+    const MessageList = this.props.messageList.map((message) =>
+      <ListItem key={message.id}
         primaryText={
           <p>
-            {item.username} -> {this.timeformat(item.timestamp)}
+            {message.username} -> {this.timeformat(message.timestamp)}
           </p>
         }
-        secondaryText={item.message}
+        secondaryText={message.message}
       >
       </ListItem>
     );
@@ -37,8 +37,8 @@ class Board extends PureComponent {
   }
 }
 
-Board.propTypes = {
-  messages: PropTypes.array.isRequired,
-};
+const mapStateToProps = (state) => ({
+  messageList: state.messageState.messageList,
+});
 
-export default Board;
+export default connect(mapStateToProps)(Board);
