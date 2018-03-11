@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import UserDialog from '../components/UserDialog';
 import Board from '../components/Board';
 import MessageInput from '../components/MessageInput';
-import * as firebase from 'firebase';
+import { db } from '../firebase';
 
 class ChatBoard extends PureComponent {
   constructor() {
@@ -14,23 +14,9 @@ class ChatBoard extends PureComponent {
       boardMsg: [],
       msgInput: ''
     };
-    this.chatRef = undefined;
   }
 
-  componentDidMount() {
-    const config = {
-      apiKey: "AIzaSyC-iWVepLlcEe2RMMNwL_bJtKC6FgKqRr0",
-      authDomain: "react-firebase-460e4.firebaseapp.com",
-      databaseURL: "https://react-firebase-460e4.firebaseio.com",
-      projectId: "react-firebase-460e4",
-      storageBucket: "",
-      messagingSenderId: "63366833400"
-    };
-    firebase.initializeApp(config);
-    this.chatRef = firebase.database().ref('chatboad');
-  }
-
-  getUpdateFromFirebase = (data) => {
+  updateMessages = (data) => {
     let chatArray = this.state.boardMsg.slice();
     const item = {
       id: data.key,
@@ -55,8 +41,8 @@ class ChatBoard extends PureComponent {
       this.setState({
         userDialogOpen: false,
       });
-      // retrieve data from firebase
-      this.chatRef.on('child_added', this.getUpdateFromFirebase);
+      // show board messages after username is inputted
+      db.messageAddedListener(this.updateMessages);
     } else {
       this.setState({
         userDialogErr: 'Your name cant be empty.'
@@ -68,12 +54,7 @@ class ChatBoard extends PureComponent {
     if (this.state.msgInput === '') {
       return;
     }
-    const data = {
-      username: this.state.userName,
-      message: this.state.msgInput,
-      timestamp: Date.now(),
-    }
-    this.chatRef.push(data);
+    db.pushMessage(this.state.userName, this.state.msgInput);
     this.setState({
       msgInput: '',
     });
