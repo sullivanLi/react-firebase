@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import UserDialog from '../components/UserDialog';
-import Board from '../components/Board';
-import MessageInput from '../components/MessageInput';
+import UserDialog from './UserDialog';
+import Board from './Board';
+import MessageInput from './MessageInput';
 import { connect } from 'react-redux';
 
 class ChatBoard extends PureComponent {

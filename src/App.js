@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import ChatBoard from './containers/ChatBoard';
+import ChatBoard from './components/ChatBoard';
 
 class App extends PureComponent {
 
