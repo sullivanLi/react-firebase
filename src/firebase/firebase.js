@@ -1,16 +1,26 @@
 import * as firebase from 'firebase';
 
-const config = {
-  apiKey: "AIzaSyC-iWVepLlcEe2RMMNwL_bJtKC6FgKqRr0",
-  authDomain: "react-firebase-460e4.firebaseapp.com",
-  databaseURL: "https://react-firebase-460e4.firebaseio.com",
-  projectId: "react-firebase-460e4",
-  storageBucket: "",
-  messagingSenderId: "63366833400"
+const {
+	REACT_APP_FIREBASE_API_KEY,
+	REACT_APP_FIREBASE_AUTH_DOMAIN,
+	REACT_APP_FIREBASE_DATABASE_URL,
+	REACT_APP_FIREBASE_PROJECT_ID,
+	REACT_APP_FIREBASE_STORAGE_BUCKET,
+	REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+} = process.env;
+
+const firebaseConfig = {
+	apiKey: REACT_APP_FIREBASE_API_KEY,
+	authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
+	databaseURL: REACT_APP_FIREBASE_DATABASE_URL,
+	projectId: REACT_APP_FIREBASE_PROJECT_ID,
+	storageBucket: REACT_APP_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: REACT_APP_FIREBASE_MESSAGING_SENDER_ID
 };
 
+
 if (!firebase.apps.length) {
-  firebase.initializeApp(config);
+  firebase.initializeApp(firebaseConfig);
 }
 
 const db = firebase.database();
