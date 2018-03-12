@@ -29,21 +29,11 @@ class UserDialog extends PureComponent {
     } else {
       this.props.setUsername(this.state.username);
       // show board messages after username is inputted
-      db.messageAddedListener(this.updateMessages);
+      db.subscribe();
       this.setState({
         open: false,
       });
     }
-  }
-
-  updateMessages = (data) => {
-    const message = {
-      id: data.key,
-      username: data.val().username,
-      message: data.val().message,
-      timestamp: data.val().timestamp,
-    };
-    this.props.addMessage(message);
   }
 
   render() {

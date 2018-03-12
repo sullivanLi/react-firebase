@@ -1,4 +1,5 @@
 import { db } from './firebase';
+import store from '../store';
 
 export const pushMessage = (username, message) => {
   const data = {
@@ -9,6 +10,15 @@ export const pushMessage = (username, message) => {
   db.ref('chatboad').push(data);
 }
 
-export const messageAddedListener = (callback) => {
-  db.ref('chatboad').on('child_added', callback);
+export const subscribe = () => {
+  const { dispatch } = store;
+  db.ref('chatboad').on('child_added', (data) => {
+    const message = {
+      id: data.key,
+      username: data.val().username,
+      message: data.val().message,
+      timestamp: data.val().timestamp,
+    };
+    dispatch({ type: 'ADD_MESSAGE', message })
+  });
 }
